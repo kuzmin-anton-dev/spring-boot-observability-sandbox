@@ -1,0 +1,15 @@
+apm-server:
+  host: "0.0.0.0:8200"
+  rum:
+    enabled: true
+  auth:
+    anonymous:
+      enabled: true
+    api_key:
+      enabled: false
+
+output:
+  elasticsearch:
+    hosts: [ "elasticsearch:9200" ]
+
+max_procs: 4

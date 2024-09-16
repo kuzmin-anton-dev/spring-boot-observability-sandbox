@@ -1,0 +1,85 @@
+version: '3'
+services:
+  postgresql-downstream:
+    image: postgres:alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "downstream"
+
+  active-mq:
+    image: apache/activemq-classic
+    ports:
+      - "61616:61616"
+
+  # Traces
+  opentelemetry-collector:
+    image: otel/opentelemetry-collector:0.109.0
+    ports:
+      - "4317:4317"
+      - "55680:55680"
+    command: [ "--config=/etc/otel-collector-config.yml" ]
+    volumes:
+      - type: bind
+        source: ./opentelemetry-collector/otel-config.yml
+        target: /etc/otel-collector-config.yml
+
+  elastic-apm-server:
+    image: docker.elastic.co/apm/apm-server:8.15.1
+    volumes:
+      - type: bind
+        source: ./elastic/apm-server.docker.yml
+        target: /usr/share/apm-server/apm-server.yml
+
+  # Metrics
+  prometheus:
+    image: 'prom/prometheus:v2.45.0'
+    volumes:
+      - type: bind
+        source: ./prometheus
+        target: /etc/prometheus
+    healthcheck:
+      test: "/bin/wget -q -Y off http://localhost:9090/status -O /dev/null > /dev/null 2>&1"
+      interval: 25s
+      timeout: 3s
+
+  # Logs
+  logstash:
+    image: 'logstash:8.8.1'
+    ports:
+      - "4560:4560"
+    volumes:
+      - type: bind
+        source: ./logstash
+        target: /usr/share/logstash/pipeline/
+
+  elasticsearch:
+    image: 'elasticsearch:8.15.1'
+    environment:
+      - ES_JAVA_OPTS=-Xms750m -Xmx750m
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+
+  # UI
+  jaeger:
+    image: jaegertracing/all-in-one:1.61.0
+    ports:
+      - "16686:16686"
+    depends_on:
+      - opentelemetry-collector
+
+  grafana:
+    image: 'grafana/grafana:9.5.6'
+    ports:
+      - '3000:3000'
+    volumes:
+      - type: bind
+        source: ./grafana
+        target: /etc/grafana/provisioning/datasources
+
+  kibana:
+    image: 'kibana:8.8.1'
+    ports:
+      - '5601:5601'
