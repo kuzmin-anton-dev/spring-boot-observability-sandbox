@@ -1,18 +1,17 @@
 # spring-boot-observability-sandbox
 
-### Overview
-
-
-
-### Setup
+#### Before you start
 
 1. Run docker compose
-   a
 ```shell
 docker compose -f infrastructure/docker-compose.yml up -d
 ```
 
-2. Run downstream and upstream services
+### How to run the project
+
+1. Run downstream and upstream services
+2. Execute http requests from the `/requests` folder
+3. Check observability tools
 
 ### Useful links
 
