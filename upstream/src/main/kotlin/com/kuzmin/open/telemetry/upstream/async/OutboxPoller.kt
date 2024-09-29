@@ -1,5 +1,6 @@
 package com.kuzmin.open.telemetry.upstream.async
 
+import io.micrometer.tracing.SpanAndScope
 import io.micrometer.tracing.Tracer
 import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationListener
@@ -24,8 +25,11 @@ class OutboxPoller(
     private fun pollMessage() {
         logger.info("Polling for messages")
         val (context, runnable) = storage.poll() ?: return
-        var traceContext = tracer.restoreContext(context)
-        tracer.withSpan(tracer.spanBuilder().setParent(traceContext).start()).use { runnable.invoke() }
+        val span = tracer.spanBuilder()
+            .name("poll_messages")
+            .setParent(tracer.restoreContext(context))
+            .start()
+        SpanAndScope(span, tracer.withSpan(span)).use { runnable.invoke() }
         logger.info("Message sent")
     }
 
