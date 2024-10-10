@@ -41,7 +41,6 @@ dependencies {
     // Logs
     implementation("net.logstash.logback:logstash-logback-encoder:8.0")
     implementation("ch.qos.logback:logback-classic:1.5.6")
-    runtimeOnly("io.opentelemetry.instrumentation:opentelemetry-logback-mdc-1.0:2.8.0-alpha")
 
     implementation(project(":downstream-api"))
 
