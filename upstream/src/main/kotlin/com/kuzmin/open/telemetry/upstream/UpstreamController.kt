@@ -7,6 +7,8 @@ import com.kuzmin.open.telemetry.downstream.async.StoreMessageMessage
 import com.kuzmin.open.telemetry.upstream.async.OutboxStorage
 import com.kuzmin.open.telemetry.upstream.async.OutboxTracingService
 import com.kuzmin.open.telemetry.upstream.async.UpstreamSqsProducer
+import io.micrometer.tracing.SpanAndScope
+import io.micrometer.tracing.Tracer
 import org.slf4j.LoggerFactory
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.web.bind.annotation.GetMapping
@@ -26,7 +28,8 @@ class UpstreamController(
     private val jmsTemplate: JmsTemplate,
     private val sqsProducer: UpstreamSqsProducer,
     private val outboxStorage: OutboxStorage,
-    private val outboxTracingService: OutboxTracingService
+    private val outboxTracingService: OutboxTracingService,
+    private val tracer: Tracer
 ) {
 
     private val logger = LoggerFactory.getLogger(UpstreamController::class.java)
@@ -69,8 +72,11 @@ class UpstreamController(
             message = generateRandomMessage()
         )
         outboxStorage.store(outboxTracingService.extractCurrentContext()) {
-            logger.info("Send message from outbox")
-            jmsTemplate.convertAndSend("store_message", message)
+            val span = tracer.nextSpan().name("sending_message").start()
+            SpanAndScope(span, tracer.withSpan(span)).use {
+                logger.info("Send message from outbox")
+                jmsTemplate.convertAndSend("store_message", message)
+            }
         }
     }
 
