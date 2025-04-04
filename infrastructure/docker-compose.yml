@@ -29,6 +29,7 @@ services:
     image: otel/opentelemetry-collector:0.109.0
     ports:
       - "4317:4317"
+      - "4318:4318"
       - "55680:55680"
     command: [ "--config=/etc/otel-collector-config.yml" ]
     volumes:

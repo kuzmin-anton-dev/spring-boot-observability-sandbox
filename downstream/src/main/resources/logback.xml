@@ -1,6 +1,12 @@
 <configuration>
+
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+    </appender>
+
+    <appender name="otel-console" class="io.opentelemetry.instrumentation.logback.mdc.v1_0.OpenTelemetryAppender">
+        <traceIdKey>trace.id</traceIdKey>
+        <appender-ref ref="console"/>
     </appender>
 
     <appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
@@ -8,8 +14,13 @@
         <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
     </appender>
 
-    <root level="info">
-        <appender-ref ref="console"/>
+    <appender name="otel-stash" class="io.opentelemetry.instrumentation.logback.mdc.v1_0.OpenTelemetryAppender">
+        <traceIdKey>trace.id</traceIdKey>
         <appender-ref ref="stash"/>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="otel-console"/>
+        <appender-ref ref="otel-stash"/>
     </root>
 </configuration>

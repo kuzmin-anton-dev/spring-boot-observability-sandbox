@@ -20,7 +20,6 @@ repositories {
 
 dependencyManagement {
     imports {
-        mavenBom("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom:2.6.0")
         mavenBom("software.amazon.awssdk:bom:2.31.14")
     }
 }
@@ -32,9 +31,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
 
     // Traces
-    implementation("io.micrometer:micrometer-tracing")
-    implementation("io.micrometer:micrometer-tracing-bridge-otel")
-    implementation("io.opentelemetry:opentelemetry-exporter-otlp")
 
     // Metrics
     implementation("io.micrometer:micrometer-registry-prometheus")
@@ -42,6 +38,7 @@ dependencies {
     // Logs
     implementation("net.logstash.logback:logstash-logback-encoder:8.0")
     implementation("ch.qos.logback:logback-classic:1.5.6")
+    runtimeOnly("io.opentelemetry.instrumentation:opentelemetry-logback-mdc-1.0:2.14.0-alpha")
 
     // AWS
     implementation("software.amazon.awssdk:sqs")
