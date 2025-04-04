@@ -33,6 +33,8 @@ dependencies {
 
     // Traces
     implementation("io.opentelemetry:opentelemetry-api")
+    implementation("io.micrometer:micrometer-tracing")
+    implementation("io.micrometer:micrometer-tracing-bridge-otel")
 
     // Metrics
     implementation("io.micrometer:micrometer-registry-prometheus")
