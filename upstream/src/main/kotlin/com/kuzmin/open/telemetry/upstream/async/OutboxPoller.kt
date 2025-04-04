@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit
 @Component
 class OutboxPoller(
     private val storage: OutboxStorage,
+    private val outboxTracingService: OutboxTracingService,
 ) : ApplicationListener<ContextRefreshedEvent>, AutoCloseable {
 
     private val logger = LoggerFactory.getLogger(OutboxPoller::class.java)
@@ -21,8 +22,12 @@ class OutboxPoller(
 
     private fun pollMessage() {
         logger.info("Polling for messages")
-        val runnable = storage.poll()
-        runnable()
+        val (context, runnable) = storage.poll() ?: return
+        outboxTracingService.withSpan(
+            spanName = "poll_messages",
+            parent = context,
+            block = runnable
+        )
         logger.info("Message sent")
     }
 
