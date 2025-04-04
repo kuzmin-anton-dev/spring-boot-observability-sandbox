@@ -21,6 +21,7 @@ repositories {
 dependencyManagement {
     imports {
         mavenBom("software.amazon.awssdk:bom:2.31.14")
+        mavenBom("io.opentelemetry:opentelemetry-bom:1.48.0")
     }
 }
 
@@ -31,6 +32,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
 
     // Traces
+    implementation("io.opentelemetry:opentelemetry-api")
 
     // Metrics
     implementation("io.micrometer:micrometer-registry-prometheus")

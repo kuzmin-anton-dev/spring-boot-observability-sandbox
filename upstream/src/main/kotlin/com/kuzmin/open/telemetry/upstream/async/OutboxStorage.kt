@@ -6,11 +6,11 @@ import java.util.LinkedList
 @Component
 class OutboxStorage {
 
-    private val messageQueue = LinkedList<() -> Unit>()
+    private val messageQueue = LinkedList<Pair<OutboxTraceContext, () -> Unit>>()
 
-    fun store(runnable: () -> Unit) {
-        messageQueue.add(runnable)
+    fun store(context: OutboxTraceContext, runnable: () -> Unit) {
+        messageQueue.add(context to runnable)
     }
 
-    fun poll(): () -> Unit = messageQueue.poll()
+    fun poll(): Pair<OutboxTraceContext, () -> Unit>? = messageQueue.poll()
 }
