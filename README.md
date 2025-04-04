@@ -3,15 +3,24 @@
 #### Before you start
 
 1. Run docker compose
+
 ```shell
 docker compose -f infrastructure/docker-compose.yml up -d
 ```
 
-### How to run the project
+#### How to run the project
 
 1. Run downstream and upstream services
 2. Execute http requests from the `/requests` folder
 3. Check observability tools
+
+#### After you finish
+
+1. Stop docker compose
+
+```shell
+docker compose -f infrastructure/docker-compose.yml down
+```
 
 ### Useful links
 

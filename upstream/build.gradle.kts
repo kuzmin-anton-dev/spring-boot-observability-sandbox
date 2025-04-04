@@ -21,6 +21,7 @@ repositories {
 dependencyManagement {
     imports {
         mavenBom("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom:2.6.0")
+        mavenBom("software.amazon.awssdk:bom:2.31.14")
     }
 }
 
@@ -41,6 +42,9 @@ dependencies {
     // Logs
     implementation("net.logstash.logback:logstash-logback-encoder:8.0")
     implementation("ch.qos.logback:logback-classic:1.5.6")
+
+    // AWS
+    implementation("software.amazon.awssdk:sqs")
 
     implementation(project(":downstream-api"))
 

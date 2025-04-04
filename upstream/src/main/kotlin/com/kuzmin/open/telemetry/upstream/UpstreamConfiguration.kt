@@ -12,6 +12,11 @@ import org.springframework.jms.support.converter.MappingJackson2MessageConverter
 import org.springframework.jms.support.converter.MessageConverter
 import org.springframework.jms.support.converter.MessageType
 import org.springframework.web.client.RestClient
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider
+import software.amazon.awssdk.regions.Region
+import software.amazon.awssdk.services.sqs.SqsClient
+import java.net.URI
 
 @Configuration
 class UpstreamConfiguration {
@@ -50,4 +55,15 @@ class UpstreamConfiguration {
         converter.setTypeIdPropertyName("_type")
         return converter
     }
+
+    @Bean
+    fun sqsClient(): SqsClient = SqsClient.builder()
+        .endpointOverride(URI.create("http://localhost:4566"))
+        .region(Region.of("us-east-1"))
+        .credentialsProvider(
+            StaticCredentialsProvider.create(
+                AwsBasicCredentials.create("dummy", "dummy")
+            )
+        )
+        .build()
 }

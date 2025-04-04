@@ -19,7 +19,7 @@ class OutboxPoller(
     private val executor = Executors.newSingleThreadScheduledExecutor()
 
     override fun onApplicationEvent(event: ContextRefreshedEvent) {
-        executor.scheduleAtFixedRate(::pollMessage, 0L, 500L, TimeUnit.MILLISECONDS)
+        executor.scheduleAtFixedRate(::pollMessage, 0L, 5, TimeUnit.SECONDS)
     }
 
     private fun pollMessage() {

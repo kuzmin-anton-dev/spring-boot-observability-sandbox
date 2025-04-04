@@ -7,6 +7,7 @@ import com.kuzmin.open.telemetry.downstream.async.StoreMessageMessage
 import com.kuzmin.open.telemetry.upstream.async.OutboxStorage
 import com.kuzmin.open.telemetry.upstream.async.extractCurrentContext
 import io.micrometer.tracing.Tracer
+import com.kuzmin.open.telemetry.upstream.async.UpstreamSqsProducer
 import org.slf4j.LoggerFactory
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.web.bind.annotation.GetMapping
@@ -24,6 +25,7 @@ import java.util.*
 class UpstreamController(
     private val restClient: RestClient,
     private val jmsTemplate: JmsTemplate,
+    private val sqsProducer: UpstreamSqsProducer,
     private val outboxStorage: OutboxStorage,
     private val tracer: Tracer
 ) {
@@ -50,6 +52,15 @@ class UpstreamController(
             message = generateRandomMessage()
         )
         jmsTemplate.convertAndSend("store_message", message)
+    }
+
+    @PostMapping("/async/sqs")
+    fun storeRandomMessageAsyncSqs() {
+        logger.info("Async sending a random message to sqs")
+        val message = StoreMessageMessage(
+            message = generateRandomMessage()
+        )
+        sqsProducer.sendMessage(message.toString())
     }
 
     @PostMapping("/async/outbox")

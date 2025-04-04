@@ -1,4 +1,3 @@
-version: '3'
 services:
   postgresql-downstream:
     image: postgres:alpine
@@ -13,6 +12,17 @@ services:
     image: apache/activemq-classic
     ports:
       - "61616:61616"
+
+  localstack:
+    image: localstack/localstack
+    ports:
+      - "4510-4559:4510-4559"
+      - "4566:4566"
+    volumes:
+      - type: bind
+        source: ./localstack/init-aws.sh
+        target: /etc/localstack/init/ready.d/init-aws.sh
+        read_only: true
 
   # Traces
   opentelemetry-collector:
