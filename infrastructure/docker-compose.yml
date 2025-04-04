@@ -26,19 +26,10 @@ services:
         read_only: true
 
   # Traces
-  opentelemetry-collector:
-    image: otel/opentelemetry-collector:0.109.0
-    ports:
-      - "4318:4318"
-      - "55680:55680"
-    command: [ "--config=/etc/otel-collector-config.yml" ]
-    volumes:
-      - type: bind
-        source: ./opentelemetry-collector/otel-config.yml
-        target: /etc/otel-collector-config.yml
-
   elastic-apm-server:
     image: docker.elastic.co/apm/apm-server:8.15.1
+    ports:
+      - "8200:8200"
     volumes:
       - type: bind
         source: ./elastic/apm-server.docker.yml
@@ -74,13 +65,6 @@ services:
       - xpack.security.enabled=false
 
   # UI
-  jaeger:
-    image: jaegertracing/all-in-one:1.61.0
-    ports:
-      - "16686:16686"
-    depends_on:
-      - opentelemetry-collector
-
   grafana:
     image: grafana/grafana:9.5.6
     ports:
