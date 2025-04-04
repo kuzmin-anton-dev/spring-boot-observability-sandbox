@@ -1,6 +1,5 @@
 package com.kuzmin.open.telemetry.upstream
 
-import io.opentelemetry.exporter.otlp.trace.OtlpGrpcSpanExporter
 import jakarta.jms.ConnectionFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer
@@ -28,13 +27,6 @@ class UpstreamConfiguration {
     ): RestClient {
         return restClientBuilder
             .baseUrl(downstreamBaseUrl)
-            .build()
-    }
-
-    @Bean
-    fun otlpGrpcSpanExporter(): OtlpGrpcSpanExporter {
-        return OtlpGrpcSpanExporter.builder()
-            .setEndpoint("http://localhost:4317")
             .build()
     }
 
