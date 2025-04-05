@@ -1,4 +1,5 @@
 services:
+  # Storage
   postgresql-downstream:
     image: postgres:alpine
     ports:
@@ -24,7 +25,7 @@ services:
         target: /etc/localstack/init/ready.d/init-aws.sh
         read_only: true
 
-  # Traces
+  # Observability
   opentelemetry-collector:
     image: otel/opentelemetry-collector:0.109.0
     ports:
@@ -36,6 +37,7 @@ services:
         source: ./opentelemetry-collector/otel-config.yml
         target: /etc/otel-collector-config.yml
 
+  # Traces
   elastic-apm-server:
     image: docker.elastic.co/apm/apm-server:8.15.1
     volumes:
@@ -56,15 +58,6 @@ services:
       timeout: 3s
 
   # Logs
-  logstash:
-    image: 'logstash:8.8.1'
-    ports:
-      - "4560:4560"
-    volumes:
-      - type: bind
-        source: ./logstash
-        target: /usr/share/logstash/pipeline/
-
   elasticsearch:
     image: 'elasticsearch:8.15.1'
     environment:
