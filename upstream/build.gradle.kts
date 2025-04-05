@@ -35,7 +35,7 @@ dependencies {
     implementation("io.opentelemetry:opentelemetry-api")
 
     // Metrics
-    implementation("io.micrometer:micrometer-registry-prometheus")
+    implementation("io.micrometer:micrometer-registry-otlp")
 
     // Logs
     implementation("net.logstash.logback:logstash-logback-encoder:8.0")
