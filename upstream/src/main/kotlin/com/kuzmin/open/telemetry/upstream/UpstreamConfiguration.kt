@@ -21,6 +21,7 @@ import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.sqs.SqsClient
 import java.net.URI
 
+
 @Configuration
 class UpstreamConfiguration {
 

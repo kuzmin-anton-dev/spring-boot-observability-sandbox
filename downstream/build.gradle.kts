@@ -1,8 +1,8 @@
 plugins {
     id("org.jetbrains.kotlin.jvm")
     id("org.jetbrains.kotlin.plugin.spring") version "1.9.25"
-    id("org.springframework.boot") version "3.3.3"
-    id("io.spring.dependency-management") version "1.1.6"
+    id("org.springframework.boot") version "3.4.4"
+    id("io.spring.dependency-management") version "1.1.7"
 }
 
 group = "com.kuzmin.open.telemetry"
@@ -40,8 +40,11 @@ dependencies {
 
     // Logs
     implementation("net.logstash.logback:logstash-logback-encoder:8.0")
-    implementation("ch.qos.logback:logback-classic:1.5.6")
-    runtimeOnly("io.opentelemetry.instrumentation:opentelemetry-logback-mdc-1.0:2.14.0-alpha")
+    implementation("ch.qos.logback.access:logback-access-common:2.0.6")
+    implementation("ch.qos.logback.access:logback-access-tomcat:2.0.6")
+    implementation("ch.qos.logback:logback-classic")
+    implementation("io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0:2.14.0-alpha")
+    implementation("io.opentelemetry:opentelemetry-exporter-otlp")
 
     implementation(project(":downstream-api"))
 
