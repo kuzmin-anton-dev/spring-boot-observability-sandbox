@@ -31,6 +31,8 @@ services:
       - "4318:4318"
       - "55680:55680"
     command: [ "--config=/etc/otel-collector-config.yml" ]
+    environment:
+      - NEWRELIC_API_KEY=${NEWRELIC_API_KEY}
     volumes:
       - type: bind
         source: ./opentelemetry-collector/otel-config.yml
