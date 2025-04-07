@@ -20,6 +20,11 @@ exporters:
     tls:
       insecure: true
 
+  otlphttp/newrelic:
+    endpoint: https://otlp.eu01.nr-data.net:4318
+    headers:
+      api-key: ${NEWRELIC_API_KEY}
+
   prometheus:
     endpoint: 0.0.0.0:8889
     namespace: default
@@ -29,8 +34,8 @@ service:
     traces:
       receivers: [ otlp ]
       processors: [ batch ]
-      exporters: [ otlp/jaeger, otlp/elastic ]
+      exporters: [ otlp/jaeger, otlp/elastic, otlphttp/newrelic ]
     metrics:
       receivers: [ otlp ]
       processors: [ batch ]
-      exporters: [ prometheus ]
+      exporters: [ prometheus, otlphttp/newrelic ]
