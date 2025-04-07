@@ -26,10 +26,6 @@ exporters:
 
 service:
   pipelines:
-    logs:
-      receivers: [ otlp ]
-      processors: [ batch ]
-      exporters: [ otlp/elastic ]
     traces:
       receivers: [ otlp ]
       processors: [ batch ]
