@@ -22,15 +22,13 @@ class OutboxPoller(
 
     private fun pollMessage() {
         logger.info("Polling for messages")
-        while (true) {
-            val (context, runnable) = storage.poll() ?: return
-            outboxTracingService.withSpan(
-                spanName = "poll_messages",
-                parent = context,
-                block = runnable
-            )
-            logger.info("Message sent")
-        }
+        val (context, runnable) = storage.poll() ?: return
+        outboxTracingService.withSpan(
+            spanName = "poll_messages",
+            parent = context,
+            block = runnable
+        )
+        logger.info("Message sent")
     }
 
     override fun close() {
