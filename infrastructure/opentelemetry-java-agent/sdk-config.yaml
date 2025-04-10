@@ -1,0 +1,34 @@
+file_format: "0.3"
+
+resource:
+  attributes:
+    - name: service.name
+      value: ${OTEL_CUSTOM_SERVICE_NAME}
+
+propagator:
+  tracecontext:
+
+tracer_provider:
+  processors:
+    - batch:
+        exporter:
+          otlp:
+            protocol: http/protobuf
+            endpoint: http://localhost:8200/v1/traces
+  sampler:
+    parent_based:
+      root:
+        rule_based_routing:
+          fallback_sampler:
+            trace_id_ratio_based:
+              ratio: 0.1
+          span_kind: SERVER
+          rules:
+            - action: DROP
+              attribute: url.path
+              pattern: /actuator.*
+
+instrumentation:
+  java:
+    aws-sdk:
+      experimental-use-propagator-for-messaging: true
