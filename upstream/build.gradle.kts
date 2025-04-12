@@ -1,8 +1,8 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm")
-    id("org.jetbrains.kotlin.plugin.spring") version "1.9.25"
-    id("org.springframework.boot") version "3.3.3"
-    id("io.spring.dependency-management") version "1.1.6"
+    id("org.jetbrains.kotlin.jvm") version "2.1.20"
+    id("org.jetbrains.kotlin.plugin.spring") version "2.1.20"
+    id("org.springframework.boot") version "3.4.4"
+    id("io.spring.dependency-management") version "1.1.7"
 }
 
 group = "com.kuzmin.open.telemetry"
@@ -40,9 +40,11 @@ dependencies {
     implementation("io.micrometer:micrometer-registry-otlp")
 
     // Logs
-    implementation("net.logstash.logback:logstash-logback-encoder:8.0")
-    implementation("ch.qos.logback:logback-classic:1.5.6")
-    runtimeOnly("io.opentelemetry.instrumentation:opentelemetry-logback-mdc-1.0:2.14.0-alpha")
+    implementation("net.logstash.logback:logstash-logback-encoder:8.1")
+    implementation("ch.qos.logback:logback-classic")
+
+    // OpenTelemetry
+    runtimeOnly("io.opentelemetry.instrumentation:opentelemetry-logback-mdc-1.0:2.15.0-alpha")
 
     // AWS
     implementation("software.amazon.awssdk:sqs")

@@ -34,7 +34,7 @@ class UpstreamController(
 
     private val logger = LoggerFactory.getLogger(UpstreamController::class.java)
 
-    @PostMapping
+    @PostMapping("/sync")
     fun storeRandomMessage(): Long {
         logger.info("Sync sending random message")
         val request = StoreMessageRequest(
@@ -47,8 +47,8 @@ class UpstreamController(
         return response!!.id
     }
 
-    @PostMapping("/async")
-    fun storeRandomMessageAsync() {
+    @PostMapping("/async/activemq")
+    fun storeRandomMessageAsyncActiveMq() {
         logger.info("Async sending a random message")
         val message = StoreMessageMessage(
             message = generateRandomMessage()
@@ -65,8 +65,8 @@ class UpstreamController(
         sqsProducer.sendMessage(message.toString())
     }
 
-    @PostMapping("/async/outbox")
-    fun storeRandomMessageAsyncExecutor() {
+    @PostMapping("/async/outbox/activemq")
+    fun storeRandomMessageAsyncOutboxActiveMq() {
         logger.info("Async sending a random message via outbox")
         val message = StoreMessageMessage(
             message = generateRandomMessage()
