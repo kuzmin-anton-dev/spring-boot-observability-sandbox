@@ -2,7 +2,7 @@
   <configuration default="false" name="UpstreamApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
     <module name="spring-boot-observability-sandbox.upstream.main" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.kuzmin.open.telemetry.upstream.UpstreamApplication" />
-    <option name="VM_PARAMETERS" value="-javaagent:infrastructure/opentelemetry-java-agent/opentelemetry-javaagent.jar -Dotel.service.name=upstream -Dotel.exporter.otlp.endpoint=http://localhost:4318 -Dotel.exporter.otlp.protocol=http/protobuf -Dotel.metrics.exporter=none -Dotel.logs.exporter=none -Dotel.instrumentation.aws-sdk.experimental-use-propagator-for-messaging=true" />
+    <option name="VM_PARAMETERS" value="-javaagent:infrastructure/opentelemetry-java-agent/opentelemetry-javaagent.jar -Dotel.service.name=upstream -Dotel.exporter.otlp.endpoint=http://localhost:4318 -Dotel.exporter.otlp.protocol=http/protobuf -Dotel.metrics.exporter=none -Dotel.logs.exporter=none -Dotel.instrumentation.aws-sdk.experimental-use-propagator-for-messaging=true -Dotel.javaagent.logging=application" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="com.kuzmin.open.telemetry.upstream.*" />

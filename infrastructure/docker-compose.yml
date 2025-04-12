@@ -1,6 +1,7 @@
 services:
+  # Storage
   postgresql-downstream:
-    image: postgres:alpine
+    image: postgres:16-alpine3.20
     ports:
       - "5432:5432"
     environment:
@@ -9,12 +10,12 @@ services:
       POSTGRES_DB: "downstream"
 
   active-mq:
-    image: apache/activemq-classic
+    image: apache/activemq-classic:6.1.6
     ports:
       - "61616:61616"
 
   localstack:
-    image: localstack/localstack
+    image: localstack/localstack:4.3.0
     ports:
       - "4510-4559:4510-4559"
       - "4566:4566"
@@ -45,7 +46,7 @@ services:
 
   # Metrics
   prometheus:
-    image: 'prom/prometheus:v2.45.0'
+    image: prom/prometheus:v2.45.0
     volumes:
       - type: bind
         source: ./prometheus
@@ -57,7 +58,7 @@ services:
 
   # Logs
   logstash:
-    image: 'logstash:8.8.1'
+    image: logstash:8.8.1
     ports:
       - "4560:4560"
     volumes:
@@ -66,7 +67,7 @@ services:
         target: /usr/share/logstash/pipeline/
 
   elasticsearch:
-    image: 'elasticsearch:8.15.1'
+    image: elasticsearch:8.15.1
     environment:
       - ES_JAVA_OPTS=-Xms750m -Xmx750m
       - discovery.type=single-node
@@ -81,7 +82,7 @@ services:
       - opentelemetry-collector
 
   grafana:
-    image: 'grafana/grafana:9.5.6'
+    image: grafana/grafana:9.5.6
     ports:
       - '3000:3000'
     volumes:
@@ -90,6 +91,6 @@ services:
         target: /etc/grafana/provisioning/datasources
 
   kibana:
-    image: 'kibana:8.8.1'
+    image: kibana:8.8.1
     ports:
       - '5601:5601'
