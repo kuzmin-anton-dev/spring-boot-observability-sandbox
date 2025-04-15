@@ -1,8 +1,11 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="DownstreamApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <envs>
+      <env name="OTEL_SERVICE_NAME" value="downstream" />
+    </envs>
     <module name="spring-boot-observability-sandbox.downstream.main" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.kuzmin.open.telemetry.downstream.DownstreamApplication" />
-    <option name="VM_PARAMETERS" value="-javaagent:infrastructure/opentelemetry-java-agent/opentelemetry-javaagent.jar -Dotel.service.name=downstream -Dotel.exporter.otlp.endpoint=http://localhost:4318 -Dotel.exporter.otlp.protocol=http/protobuf -Dotel.metrics.exporter=none -Dotel.logs.exporter=none -Dotel.instrumentation.aws-sdk.experimental-use-propagator-for-messaging=true -Dotel.javaagent.logging=application" />
+    <option name="VM_PARAMETERS" value="-javaagent:infrastructure/opentelemetry-java-agent/opentelemetry-javaagent.jar -Dotel.metrics.exporter=none -Dotel.logs.exporter=none -Dotel.traces.sampler=parentbased_traceidratio -Dotel.traces.sampler.arg=1 -Dotel.exporter.otlp.endpoint=http://localhost:8200 -Dotel.exporter.otlp.protocol=grpc -Dotel.instrumentation.aws-sdk.experimental-use-propagator-for-messaging=true -Dotel.javaagent.logging=application" />
     <extension name="software.aws.toolkits.jetbrains.core.execution.JavaAwsConnectionExtension">
       <option name="credential" />
       <option name="region" />
