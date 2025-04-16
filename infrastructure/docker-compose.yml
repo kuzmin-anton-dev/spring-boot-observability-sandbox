@@ -44,6 +44,17 @@ services:
         source: ./elastic/apm-server.docker.yml
         target: /usr/share/apm-server/apm-server.yml
 
+  grafana-tempo:
+    image: grafana/tempo:main-f6b43c7
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    volumes:
+      - type: bind
+        source: ./tempo/tempo.yaml
+        target: /etc/tempo.yaml
+      - type: volume
+        source: tempo-data
+        target: /var/tempo
+
   # Metrics
   prometheus:
     image: prom/prometheus:v3.3.0
@@ -94,3 +105,6 @@ services:
     image: kibana:8.18.0
     ports:
       - '5601:5601'
+
+volumes:
+  tempo-data:
