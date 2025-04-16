@@ -27,7 +27,7 @@ services:
 
   # Traces
   opentelemetry-collector:
-    image: otel/opentelemetry-collector:0.109.0
+    image: otel/opentelemetry-collector:0.123.0
     ports:
       - "4318:4318"
       - "55680:55680"
@@ -38,7 +38,7 @@ services:
         target: /etc/otel-collector-config.yml
 
   elastic-apm-server:
-    image: docker.elastic.co/apm/apm-server:8.15.1
+    image: docker.elastic.co/apm/apm-server:8.18.0
     volumes:
       - type: bind
         source: ./elastic/apm-server.docker.yml
@@ -46,7 +46,7 @@ services:
 
   # Metrics
   prometheus:
-    image: prom/prometheus:v2.45.0
+    image: prom/prometheus:v3.3.0
     volumes:
       - type: bind
         source: ./prometheus
@@ -58,7 +58,7 @@ services:
 
   # Logs
   logstash:
-    image: logstash:8.8.1
+    image: logstash:8.18.0
     ports:
       - "4560:4560"
     volumes:
@@ -67,7 +67,7 @@ services:
         target: /usr/share/logstash/pipeline/
 
   elasticsearch:
-    image: elasticsearch:8.15.1
+    image: elasticsearch:8.18.0
     environment:
       - ES_JAVA_OPTS=-Xms750m -Xmx750m
       - discovery.type=single-node
@@ -75,14 +75,14 @@ services:
 
   # UI
   jaeger:
-    image: jaegertracing/all-in-one:1.61.0
+    image: jaegertracing/all-in-one:1.68.0
     ports:
       - "16686:16686"
     depends_on:
       - opentelemetry-collector
 
   grafana:
-    image: grafana/grafana:9.5.6
+    image: grafana/grafana:11.6.0
     ports:
       - '3000:3000'
     volumes:
@@ -91,6 +91,6 @@ services:
         target: /etc/grafana/provisioning/datasources
 
   kibana:
-    image: kibana:8.8.1
+    image: kibana:8.18.0
     ports:
       - '5601:5601'
